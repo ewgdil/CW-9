@@ -1,0 +1,70 @@
+using System;
+
+class BankAccount
+{
+    private decimal balance;
+
+    // Конструктор инициализации начального баланса
+    public BankAccount(decimal initialBalance)
+    {
+        if (initialBalance < 0)
+            throw new ArgumentException("Бастапқы баланс оң мәнде болуы керек");
+
+        balance = initialBalance;
+    }
+
+    // Метод для внесения денег на счет
+    public void Deposit(decimal amount)
+    {
+        if (amount < 0)
+            throw new ArgumentException("Сома оң мәнде болуы керек");
+
+        balance += amount;
+        Console.WriteLine($"Шотқа {amount} теңге салынды. Жаңа баланс: {balance}");
+    }
+
+    // Метод для снятия денег со счета
+    public void Withdraw(decimal amount)
+    {
+        if (amount < 0)
+            throw new ArgumentException("Сома оң мәнде болуы керек");
+
+        if (amount > balance)
+            throw new InvalidOperationException("Қаражат жеткіліксіз");
+
+        balance -= amount;
+        Console.WriteLine($"{amount} теңге алынды. Қалған баланс: {balance}");
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        try
+        {
+            // Бастапқы баланс 1000 теңге болатын есептік жазбаны жасау
+            BankAccount account = new BankAccount(1000);
+
+            // Қаражат алу әрекеті - 1500 теңге (баланс жеткіліксіз)
+            account.Withdraw(1500);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Қате: " + ex.Message);
+        }
+
+        try
+        {
+            // Бастапқы баланс 1000 теңге болатын есептік жазбаны жасау
+            BankAccount account = new BankAccount(1000);
+
+            // Теріс сома салу әрекеті
+            account.Deposit(-500);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Қате: " + ex.Message);
+        }
+    }
+}
